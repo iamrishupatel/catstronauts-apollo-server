@@ -3,6 +3,20 @@ import styled from "@emotion/styled";
 import { colors, mq } from "../styles";
 import { humanReadableTimeFromSeconds } from "../utils/helpers";
 import { navigate } from "@reach/router";
+import { gql, useMutation } from "@apollo/client";
+
+export const INCREMENT_TRACK_VIEWS = gql`
+  mutation IncrementTrackViews($incrementTrackViewsId: ID!) {
+    incrementTrackViews(id: $incrementTrackViewsId) {
+      code
+      success
+      message
+      track {
+        id
+      }
+    }
+  }
+`;
 
 /**
  * Track Card component renders basic info in a card format
@@ -12,8 +26,17 @@ const TrackCard = ({ track }) => {
   const { title, thumbnail, author, length, modulesCount, id } = track;
 
   const handlenavigate = () => {
+    incrementTrackViews();
     navigate(`track/${id}`);
   };
+
+  const [incrementTrackViews] = useMutation(INCREMENT_TRACK_VIEWS, {
+    variables: { incrementTrackViewsId: id },
+    onCompleted: data => {
+      console.log(data);
+    },
+  });
+
   return (
     <CardContainer onClick={handlenavigate}>
       <CardContent>
