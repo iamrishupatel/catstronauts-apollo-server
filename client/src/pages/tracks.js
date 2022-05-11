@@ -10,7 +10,7 @@ import QueryResult from "../components/query-result";
  */
 export const TRACKS = gql`
   query Query {
-    getTracks {
+    tracks {
       id
       title
       thumbnail
@@ -30,7 +30,7 @@ const Tracks = () => {
   return (
     <Layout grid>
       <QueryResult loading={loading} error={error} data={data}>
-        {data?.getTracks?.map(track => (
+        {data?.tracks?.map(track => (
           <TrackCard track={track} key={track.id} />
         ))}
       </QueryResult>
